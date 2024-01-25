@@ -16,6 +16,15 @@ type CreateOpeningRequest struct {
 	Salary   int64  `json:"salary"`
 }
 
+type UpdateOpeningRequest struct {
+	Role     string `json:"role"`
+	Company  string `json:"company"`
+	Location string `json:"location"`
+	Remote   *bool  `json:"remote"`
+	Link     string `json:"link"`
+	Salary   int64  `json:"salary"`
+}
+
 func (r *CreateOpeningRequest) Validate() error {
 	if r.Role == "" && r.Company == "" && r.Location == "" && r.Link == "" && r.Salary <= 0 && r.Remote == nil {
 		return fmt.Errorf("request body is empty or malformed")
@@ -39,4 +48,12 @@ func (r *CreateOpeningRequest) Validate() error {
 		return errParamIsRequired("remote", "bool")
 	}
 	return nil
+}
+
+func (r *UpdateOpeningRequest) Validate() error {
+	if r.Role != "" && r.Company != "" && r.Location != "" && r.Link != "" && r.Salary > 0 && r.Remote != nil {
+		return nil
+	}
+
+	return fmt.Errorf("at least one field is required")
 }
