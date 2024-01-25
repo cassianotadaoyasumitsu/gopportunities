@@ -1,7 +1,6 @@
 package router
 
 import (
-	//docs "github.com/cassianotadaoyasumitsu/gopportunities/docs"
 	"github.com/gin-gonic/gin"
 	swaggerfiles "github.com/swaggo/files"
 	ginSwagger "github.com/swaggo/gin-swagger"
