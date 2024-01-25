@@ -27,6 +27,11 @@ type ShowOpeningResponse struct {
 	Data    schemas.OpeningResponse `json:"data"`
 }
 
+type ListOpeningResponse struct {
+	Message string                    `json:"message"`
+	Data    []schemas.OpeningResponse `json:"data"`
+}
+
 func sendError(ctx *gin.Context, code int, msg string) {
 	ctx.Header("Content-Type", "application/json")
 	ctx.JSON(code, gin.H{
