@@ -8,3 +8,14 @@ services:
       - "8080:8080"
     environment:
       - GIN_MODE=release
+
+  db:
+    image: postgres:13.1-alpine
+    ports:
+      - "5432:5432"
+    environment:
+      - POSTGRES_USER=gorm
+      - POSTGRES_PASSWORD=gorm
+      - POSTGRES_DB=gorm
+    volumes:
+      - ./db/migrations:/docker-entrypoint-initdb.d

@@ -20,7 +20,7 @@ import (
 func ListOpeningHandler(ctx *gin.Context) {
 	openings := []schemas.Opening{}
 
-	if err := db.Find(&openings).Error; err != nil {
+	if err := dbp.Find(&openings).Error; err != nil {
 		sendError(ctx, http.StatusInternalServerError, "Error while finding openings")
 		return
 	}

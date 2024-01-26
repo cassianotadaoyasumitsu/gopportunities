@@ -42,7 +42,7 @@ func CreateOpeningHandler(ctx *gin.Context) {
 		Salary:   request.Salary,
 	}
 
-	if err := db.Create(&opening).Error; err != nil {
+	if err := dbp.Create(&opening).Error; err != nil {
 		logger.Errorf("Error while creating a new opening: %v", err.Error())
 		sendError(ctx, http.StatusInternalServerError, "Error while creating a new opening")
 		return
