@@ -1,8 +1,9 @@
-package handler
+package openings
 
 import (
 	"fmt"
 	"github.com/gin-gonic/gin"
+	"gopportunities/handler"
 	"gopportunities/schemas"
 	"net/http"
 )
@@ -23,19 +24,19 @@ import (
 func DeleteOpeningHandler(ctx *gin.Context) {
 	id := ctx.Query("id")
 	if id == "" {
-		sendError(ctx, http.StatusBadRequest, errParamIsRequired("id", "queryParameter").Error())
+		handler.SendError(ctx, http.StatusBadRequest, handler.ErrParamIsRequired("id", "queryParameter").Error())
 		return
 	}
 	opening := schemas.Opening{}
 	// Find the opening
-	if err := db.First(&opening, id).Error; err != nil {
-		sendError(ctx, http.StatusNotFound, fmt.Sprintf("Error while finding opening with id: %s", id))
+	if err := handler.DB.First(&opening, id).Error; err != nil {
+		handler.SendError(ctx, http.StatusNotFound, fmt.Sprintf("Error while finding opening with id: %s", id))
 		return
 	}
 	// Delete the opening
-	if err := db.Delete(&opening).Error; err != nil {
-		sendError(ctx, http.StatusInternalServerError, fmt.Sprintf("Error while deleting opening with id: %s", id))
+	if err := handler.DB.Delete(&opening).Error; err != nil {
+		handler.SendError(ctx, http.StatusInternalServerError, fmt.Sprintf("Error while deleting opening with id: %s", id))
 		return
 	}
-	sendSuccess(ctx, "DeleteOpeingHandler", opening)
+	handler.SendSuccess(ctx, "DeleteOpeingHandler", opening)
 }

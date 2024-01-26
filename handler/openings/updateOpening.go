@@ -1,8 +1,9 @@
-package handler
+package openings
 
 import (
 	"fmt"
 	"github.com/gin-gonic/gin"
+	"gopportunities/handler"
 	"gopportunities/schemas"
 	"net/http"
 )
@@ -31,21 +32,21 @@ func UpdateOpeningHandler(ctx *gin.Context) {
 	}
 
 	if err := request.Validate(); err != nil {
-		logger.Errorf("Error while validating request: %v", err.Error())
-		sendError(ctx, http.StatusBadRequest, err.Error())
+		handler.Logger.Errorf("Error while validating request: %v", err.Error())
+		handler.SendError(ctx, http.StatusBadRequest, err.Error())
 		return
 	}
 
 	id := ctx.Query("id")
 	if id == "" {
-		sendError(ctx, http.StatusBadRequest, errParamIsRequired("id", "queryParameter").Error())
+		handler.SendError(ctx, http.StatusBadRequest, handler.ErrParamIsRequired("id", "queryParameter").Error())
 		return
 	}
 
 	opening := schemas.Opening{}
 
-	if err := db.First(&opening, id).Error; err != nil {
-		sendError(ctx, http.StatusNotFound, fmt.Sprintf("Error while finding opening with id: %s", id))
+	if err := handler.DB.First(&opening, id).Error; err != nil {
+		handler.SendError(ctx, http.StatusNotFound, fmt.Sprintf("Error while finding opening with id: %s", id))
 		return
 	}
 
@@ -70,11 +71,11 @@ func UpdateOpeningHandler(ctx *gin.Context) {
 	}
 
 	// Save the opening
-	if err := db.Save(&opening).Error; err != nil {
-		logger.Errorf("Error while updating opening: %v", err.Error())
-		sendError(ctx, http.StatusInternalServerError, fmt.Sprintf("Error while updating opening with id: %s", id))
+	if err := handler.DB.Save(&opening).Error; err != nil {
+		handler.Logger.Errorf("Error while updating opening: %v", err.Error())
+		handler.SendError(ctx, http.StatusInternalServerError, fmt.Sprintf("Error while updating opening with id: %s", id))
 		return
 	}
 
-	sendSuccess(ctx, "UpdateOpeningHandler", opening)
+	handler.SendSuccess(ctx, "UpdateOpeningHandler", opening)
 }
