@@ -6,19 +6,12 @@ import (
 )
 
 var (
-	//db     *gorm.DB
 	dbp    *gorm.DB
 	logger *Logger
 )
 
 func Init() error {
 	var err error
-
-	// Initialize DB
-	//db, err = InitializeSQLite()
-	//if err != nil {
-	//	return fmt.Errorf("error initializing SQLite: %v", err)
-	//}
 
 	dbp, err = InitializePostgres()
 	if err != nil {
@@ -28,9 +21,6 @@ func Init() error {
 	return nil
 }
 
-//	func GETSQLite() *gorm.DB {
-//		return db
-//	}
 func GETPostgres() *gorm.DB {
 	return dbp
 }
