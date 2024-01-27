@@ -44,7 +44,7 @@ func UpdateOpeningHandler(ctx *gin.Context) {
 
 	opening := schemas.Opening{}
 
-	if err := db.First(&opening, id).Error; err != nil {
+	if err := dbp.First(&opening, id).Error; err != nil {
 		sendError(ctx, http.StatusNotFound, fmt.Sprintf("Error while finding opening with id: %s", id))
 		return
 	}
@@ -70,7 +70,7 @@ func UpdateOpeningHandler(ctx *gin.Context) {
 	}
 
 	// Save the opening
-	if err := db.Save(&opening).Error; err != nil {
+	if err := dbp.Save(&opening).Error; err != nil {
 		logger.Errorf("Error while updating opening: %v", err.Error())
 		sendError(ctx, http.StatusInternalServerError, fmt.Sprintf("Error while updating opening with id: %s", id))
 		return
