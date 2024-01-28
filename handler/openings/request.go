@@ -5,10 +5,6 @@ import (
 	"gopportunities/handler"
 )
 
-//func errParamIsRequired(name, typ string) error {
-//	return fmt.Errorf("param: %s (type%s) is required", name, typ)
-//}
-
 // CreateOpeningRequest is the request body for CreateOpeningHandler
 type CreateOpeningRequest struct {
 	Role     string `json:"role"`

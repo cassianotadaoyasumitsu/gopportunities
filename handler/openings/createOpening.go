@@ -21,9 +21,8 @@ import (
 // @Failure 500 {object} ErrorResponse
 // @Router /opening [post]
 func CreateOpeningHandler(ctx *gin.Context) {
-	user, _ := ctx.Get("user")
-	userID := user.(schemas.User).ID
-	handler.Logger.Infof("userID: %v", userID)
+	user, userID := getUserInfo(ctx)
+
 	request := CreateOpeningRequest{}
 
 	err := ctx.BindJSON(&request)
@@ -45,7 +44,7 @@ func CreateOpeningHandler(ctx *gin.Context) {
 		Link:     request.Link,
 		Salary:   request.Salary,
 		UserID:   userID,
-		User:     user.(schemas.User),
+		User:     user,
 	}
 
 	if err := handler.DB.Create(&opening).Error; err != nil {
@@ -55,4 +54,12 @@ func CreateOpeningHandler(ctx *gin.Context) {
 	}
 
 	handler.SendSuccess(ctx, "CreateOpeningHandler", opening)
+}
+
+func getUserInfo(ctx *gin.Context) (schemas.User, uint) {
+	user, _ := ctx.Get("user")
+
+	userID := user.(schemas.User).ID
+
+	return user.(schemas.User), userID
 }
