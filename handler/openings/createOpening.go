@@ -21,6 +21,9 @@ import (
 // @Failure 500 {object} ErrorResponse
 // @Router /opening [post]
 func CreateOpeningHandler(ctx *gin.Context) {
+	user, _ := ctx.Get("user")
+	userID := user.(schemas.User).ID
+	handler.Logger.Infof("userID: %v", userID)
 	request := CreateOpeningRequest{}
 
 	err := ctx.BindJSON(&request)
@@ -41,6 +44,8 @@ func CreateOpeningHandler(ctx *gin.Context) {
 		Remote:   *request.Remote,
 		Link:     request.Link,
 		Salary:   request.Salary,
+		UserID:   userID,
+		User:     user.(schemas.User),
 	}
 
 	if err := handler.DB.Create(&opening).Error; err != nil {

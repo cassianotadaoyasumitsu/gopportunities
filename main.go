@@ -9,6 +9,13 @@ var (
 	logger *config.Logger
 )
 
+func init() {
+	err := config.LoadEnvVariables()
+	if err != nil {
+		return
+	}
+}
+
 func main() {
 	logger = config.GetLogger("main")
 	// Initialize the config
