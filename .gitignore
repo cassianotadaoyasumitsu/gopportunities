@@ -142,3 +142,5 @@ fabric.properties
 Db folder
 
 db/
+
+.env

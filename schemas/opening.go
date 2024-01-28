@@ -13,6 +13,7 @@ type Opening struct {
 	Remote   bool
 	Link     string
 	Salary   int64
+	UserID   uint
 }
 
 type OpeningResponse struct {
@@ -23,6 +24,7 @@ type OpeningResponse struct {
 	Remote    bool      `json:"remote"`
 	Link      string    `json:"link"`
 	Salary    int64     `json:"salary"`
+	UserID    uint      `json:"user_id"`
 	CreatedAt time.Time `json:"created_at"`
 	UpdatedAt time.Time `json:"updated_at"`
 	DeletedAt time.Time `json:"deleted_at,omitempty"`

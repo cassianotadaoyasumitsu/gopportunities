@@ -1,7 +1,8 @@
-package handler
+package openings
 
 import (
 	"github.com/gin-gonic/gin"
+	"gopportunities/handler"
 	"gopportunities/schemas"
 	"net/http"
 )
@@ -18,12 +19,12 @@ import (
 // @Failure 500 {object} ErrorResponse
 // @Router /openings [get]
 func ListOpeningHandler(ctx *gin.Context) {
-	openings := []schemas.Opening{}
+	var openings []schemas.Opening
 
-	if err := db.Find(&openings).Error; err != nil {
-		sendError(ctx, http.StatusInternalServerError, "Error while finding openings")
+	if err := handler.DB.Find(&openings).Error; err != nil {
+		handler.SendError(ctx, http.StatusInternalServerError, "Error while finding openings")
 		return
 	}
 
-	sendSuccess(ctx, "ListOpeingHandler", openings)
+	handler.SendSuccess(ctx, "ListOpeningHandler", openings)
 }

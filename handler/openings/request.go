@@ -1,10 +1,9 @@
-package handler
+package openings
 
-import "fmt"
-
-func errParamIsRequired(name, typ string) error {
-	return fmt.Errorf("param: %s (type%s) is required", name, typ)
-}
+import (
+	"fmt"
+	"gopportunities/handler"
+)
 
 // CreateOpeningRequest is the request body for CreateOpeningHandler
 type CreateOpeningRequest struct {
@@ -14,6 +13,7 @@ type CreateOpeningRequest struct {
 	Remote   *bool  `json:"remote"`
 	Link     string `json:"link"`
 	Salary   int64  `json:"salary"`
+	UserID   uint   `json:"user_id"`
 }
 
 type UpdateOpeningRequest struct {
@@ -23,6 +23,7 @@ type UpdateOpeningRequest struct {
 	Remote   *bool  `json:"remote"`
 	Link     string `json:"link"`
 	Salary   int64  `json:"salary"`
+	UserID   uint   `json:"user_id"`
 }
 
 func (r *CreateOpeningRequest) Validate() error {
@@ -30,22 +31,22 @@ func (r *CreateOpeningRequest) Validate() error {
 		return fmt.Errorf("request body is empty or malformed")
 	}
 	if r.Role == "" {
-		return errParamIsRequired("role", "string")
+		return handler.ErrParamIsRequired("role", "string")
 	}
 	if r.Company == "" {
-		return errParamIsRequired("company", "string")
+		return handler.ErrParamIsRequired("company", "string")
 	}
 	if r.Location == "" {
-		return errParamIsRequired("location", "string")
+		return handler.ErrParamIsRequired("location", "string")
 	}
 	if r.Link == "" {
-		return errParamIsRequired("link", "string")
+		return handler.ErrParamIsRequired("link", "string")
 	}
 	if r.Salary <= 0 {
-		return errParamIsRequired("salary", "int64")
+		return handler.ErrParamIsRequired("salary", "int64")
 	}
 	if r.Remote == nil {
-		return errParamIsRequired("remote", "bool")
+		return handler.ErrParamIsRequired("remote", "bool")
 	}
 	return nil
 }

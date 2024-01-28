@@ -1,7 +1,8 @@
-package handler
+package openings
 
 import (
 	"github.com/gin-gonic/gin"
+	"gopportunities/handler"
 	"gopportunities/schemas"
 	"net/http"
 )
@@ -20,6 +21,8 @@ import (
 // @Failure 500 {object} ErrorResponse
 // @Router /opening [post]
 func CreateOpeningHandler(ctx *gin.Context) {
+	_, userID := handler.GetUserInfo(ctx)
+
 	request := CreateOpeningRequest{}
 
 	err := ctx.BindJSON(&request)
@@ -28,8 +31,8 @@ func CreateOpeningHandler(ctx *gin.Context) {
 	}
 
 	if err := request.Validate(); err != nil {
-		logger.Errorf("Error while validating request: %v", err.Error())
-		sendError(ctx, http.StatusBadRequest, err.Error())
+		handler.Logger.Errorf("Error while validating request: %v", err.Error())
+		handler.SendError(ctx, http.StatusBadRequest, err.Error())
 		return
 	}
 
@@ -40,13 +43,14 @@ func CreateOpeningHandler(ctx *gin.Context) {
 		Remote:   *request.Remote,
 		Link:     request.Link,
 		Salary:   request.Salary,
+		UserID:   userID,
 	}
 
-	if err := db.Create(&opening).Error; err != nil {
-		logger.Errorf("Error while creating a new opening: %v", err.Error())
-		sendError(ctx, http.StatusInternalServerError, "Error while creating a new opening")
+	if err := handler.DB.Create(&opening).Error; err != nil {
+		handler.Logger.Errorf("Error while creating a new opening: %v", err.Error())
+		handler.SendError(ctx, http.StatusInternalServerError, "Error while creating a new opening")
 		return
 	}
 
-	sendSuccess(ctx, "CreateOpeningHandler", opening)
+	handler.SendSuccess(ctx, "CreateOpeningHandler", opening)
 }
