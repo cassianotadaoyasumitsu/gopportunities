@@ -21,7 +21,7 @@ import (
 // @Failure 500 {object} ErrorResponse
 // @Router /opening [post]
 func CreateOpeningHandler(ctx *gin.Context) {
-	user, userID := getUserInfo(ctx)
+	user, userID := handler.GetUserInfo(ctx)
 
 	request := CreateOpeningRequest{}
 
@@ -44,7 +44,7 @@ func CreateOpeningHandler(ctx *gin.Context) {
 		Link:     request.Link,
 		Salary:   request.Salary,
 		UserID:   userID,
-		User:     user,
+		User:     user, // TODO: check if this is necessary
 	}
 
 	if err := handler.DB.Create(&opening).Error; err != nil {
@@ -54,12 +54,4 @@ func CreateOpeningHandler(ctx *gin.Context) {
 	}
 
 	handler.SendSuccess(ctx, "CreateOpeningHandler", opening)
-}
-
-func getUserInfo(ctx *gin.Context) (schemas.User, uint) {
-	user, _ := ctx.Get("user")
-
-	userID := user.(schemas.User).ID
-
-	return user.(schemas.User), userID
 }

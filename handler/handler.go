@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"github.com/gin-gonic/gin"
 	"gopportunities/config"
+	"gopportunities/schemas"
 	"gorm.io/gorm"
 	"net/http"
 )
@@ -41,4 +42,12 @@ func SendSuccess(ctx *gin.Context, op string, data interface{}) {
 
 func ErrParamIsRequired(name, typ string) error {
 	return fmt.Errorf("param: %s (type%s) is required", name, typ)
+}
+
+func GetUserInfo(ctx *gin.Context) (schemas.User, uint) {
+	user, _ := ctx.Get("user")
+
+	userID := user.(schemas.User).ID
+
+	return user.(schemas.User), userID
 }
