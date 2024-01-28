@@ -24,6 +24,7 @@ import (
 // @Failure 500 {object} ErrorResponse
 // @Router /opening [put]
 func UpdateOpeningHandler(ctx *gin.Context) {
+	_, userID := handler.GetUserInfo(ctx)
 	request := UpdateOpeningRequest{}
 
 	err := ctx.BindJSON(&request)
@@ -47,6 +48,11 @@ func UpdateOpeningHandler(ctx *gin.Context) {
 
 	if err := handler.DB.First(&opening, id).Error; err != nil {
 		handler.SendError(ctx, http.StatusNotFound, fmt.Sprintf("Error while finding opening with id: %s", id))
+		return
+	}
+
+	if opening.UserID != userID {
+		handler.SendError(ctx, http.StatusForbidden, "You are not allowed to update this opening")
 		return
 	}
 

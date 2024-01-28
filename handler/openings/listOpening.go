@@ -19,7 +19,7 @@ import (
 // @Failure 500 {object} ErrorResponse
 // @Router /openings [get]
 func ListOpeningHandler(ctx *gin.Context) {
-	openings := []schemas.Opening{}
+	var openings []schemas.Opening
 
 	if err := handler.DB.Find(&openings).Error; err != nil {
 		handler.SendError(ctx, http.StatusInternalServerError, "Error while finding openings")

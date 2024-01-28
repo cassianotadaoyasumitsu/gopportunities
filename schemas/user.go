@@ -9,7 +9,7 @@ type User struct {
 	gorm.Model
 	Email    string `gorm:"unique"`
 	Password string
-	Openings []Opening
+	Openings []Opening `gorm:"foreignkey:UserID"`
 }
 
 type UserResponse struct {

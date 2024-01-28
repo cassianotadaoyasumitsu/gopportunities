@@ -22,6 +22,7 @@ import (
 // @Failure 404 {object} ErrorResponse
 // @Router /opening [delete]
 func DeleteOpeningHandler(ctx *gin.Context) {
+	_, userID := handler.GetUserInfo(ctx)
 	id := ctx.Query("id")
 	if id == "" {
 		handler.SendError(ctx, http.StatusBadRequest, handler.ErrParamIsRequired("id", "queryParameter").Error())
@@ -34,9 +35,15 @@ func DeleteOpeningHandler(ctx *gin.Context) {
 		return
 	}
 	// Delete the opening
+
+	if opening.UserID != userID {
+		handler.SendError(ctx, http.StatusForbidden, "You are not allowed to delete this opening")
+		return
+	}
+
 	if err := handler.DB.Delete(&opening).Error; err != nil {
 		handler.SendError(ctx, http.StatusInternalServerError, fmt.Sprintf("Error while deleting opening with id: %s", id))
 		return
 	}
-	handler.SendSuccess(ctx, "DeleteOpeingHandler", opening)
+	handler.SendSuccess(ctx, "DeleteOpeningHandler", "Opening deleted successfully")
 }

@@ -14,7 +14,6 @@ type Opening struct {
 	Link     string
 	Salary   int64
 	UserID   uint
-	User     User
 }
 
 type OpeningResponse struct {
@@ -26,7 +25,6 @@ type OpeningResponse struct {
 	Link      string    `json:"link"`
 	Salary    int64     `json:"salary"`
 	UserID    uint      `json:"user_id"`
-	User      User      `json:"user"`
 	CreatedAt time.Time `json:"created_at"`
 	UpdatedAt time.Time `json:"updated_at"`
 	DeletedAt time.Time `json:"deleted_at,omitempty"`
